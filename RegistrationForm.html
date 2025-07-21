@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+   <link rel="stylesheet" href="Registration.css">
+</head>
+<body>
+    
+<main>
+    <form method="post" action="login.html">
+        <h2>User Registration</h2>
+        <label for="name">Name:<span class="required">*</span></label>
+        <input type="text" name="name" id="name" placeholder="Enter Name Here" 
+         pattern="^[A-Za-z\s]+$"
+         title="Only letters and spaces are allowed" 
+         required>
+        
+    <label for="email">Email:<span class="required">*</span></label>
+      <input type="email"
+       name="email"
+       id="email"
+       placeholder="Enter Email Here"
+       required
+       pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+       title="Please enter a valid email address (e.g. user@example.com)">
+
+      
+        <label for="password">Password:<span class="required">*</span></label>
+        <input type="password" name="password" id="password" placeholder="Enter Password Here"
+               required
+               pattern="^(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{8,}$"
+               title="Password must be at least 8 characters, include 1 special character, and 1 number.">
+         
+        <label>Gender:<span class="required">*</span></label>       
+        <div class="gender-options">
+            <label><input type="radio" name="gender" value="Male" required> Male</label>
+            <label><input type="radio" name="gender" value="Female"> Female</label>
+        </div>
+
+        <label for="city">Choose the City:</label>
+        <select name="city" id="city">
+            <option value="None">None</option>
+            <option value="Kolkata">Kolkata</option>
+            <option value="Dhanbad">Dhanbad</option>
+            <option value="Ranchi">Ranchi</option>
+            <option value="Bokaro">Bokaro</option>
+            <option value="Delhi">Delhi</option>
+        </select>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+</main>
+
+</body>
+</html>
