@@ -1,58 +1,146 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registration Form</title>
-   <link rel="stylesheet" href="assets/css/Registration.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Simple Registration Form</title>
+  <link rel="stylesheet" href="Registration.css">
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    main {
+      background: #ffffff;
+      padding: 20px 25px;
+      border-radius: 6px;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 24px;
+      color: #333;
+    }
+
+    label {
+      margin-top: 10px;
+      display: block;
+      font-size: 14px;
+      color: #444;
+    }
+
+    .required {
+      color: red;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    .gender-options {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+
+    .gender-options label {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 14px;
+    }
+
+    #age-error {
+      color: red;
+      font-size: 13px;
+      margin-top: -10px;
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #1e40af;
+    }
+  </style>
 </head>
 <body>
-    
+
 <main>
-    <form method="post" action="login.html">
-        <h2>User Registration</h2>
-        <label for="name">Name:<span class="required">*</span></label>
-        <input type="text" name="name" id="name" placeholder="Enter Name Here" 
-         pattern="^[A-Za-z\s]+$"
-         title="Only letters and spaces are allowed" 
-         required>
-        
+  <form id="registrationForm" method="post" action="login.html" onsubmit="return validateInline();">
+    <h2>Registration</h2>
+
+    <label for="name">Name:<span class="required">*</span></label>
+    <input type="text" name="name" id="name" required placeholder="Enter your name" pattern="^[A-Za-z\s]+$" title="Only letters and spaces allowed">
+
     <label for="email">Email:<span class="required">*</span></label>
-      <input type="email"
-       name="email"
-       id="email"
-       placeholder="Enter Email Here"
-       required
-       pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
-       title="Please enter a valid email address (e.g. user@example.com)">
+    <input type="email" name="email" id="email" required placeholder="Enter your email" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$">
 
-      
-        <label for="password">Password:<span class="required">*</span></label>
-        <input type="password" name="password" id="password" placeholder="Enter Password Here"
-               required
-               pattern="^(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{8,}$"
-               title="Password must be at least 8 characters, include 1 special character, and 1 number.">
-         
-        <label>Gender:<span class="required">*</span></label>       
-        <div class="gender-options">
-            <label><input type="radio" name="gender" value="Male" required> Male</label>
-            <label><input type="radio" name="gender" value="Female"> Female</label>
-        </div>
+    <label for="password">Password:<span class="required">*</span></label>
+    <input type="password" name="password" id="password" required placeholder="Create a password" pattern="^(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{8,}$" title="Min 8 characters, 1 special character, and 1 number.">
 
-        <label for="city">Choose the City:</label>
-        <select name="city" id="city">
-            <option value="None">None</option>
-            <option value="Kolkata">Kolkata</option>
-            <option value="Dhanbad">Dhanbad</option>
-            <option value="Ranchi">Ranchi</option>
-            <option value="Bokaro">Bokaro</option>
-            <option value="Delhi">Delhi</option>
-        </select>
+    <label>Gender:<span class="required">*</span></label>
+    <div class="gender-options">
+      <label>Male <input type="radio" name="gender" value="Male" required></label>
+      <label>Female <input type="radio" name="gender" value="Female"></label>
+    </div>
 
-        <br><br>
-        <button type="submit">Submit</button>
-    </form>
+    <label for="city">City:</label>
+    <select name="city" id="city">
+      <option value="None">Select a city</option>
+      <option value="Kolkata">Kolkata</option>
+      <option value="Dhanbad">Dhanbad</option>
+      <option value="Ranchi">Ranchi</option>
+      <option value="Bokaro">Bokaro</option>
+      <option value="Delhi">Delhi</option>
+    </select>
+
+    <label for="age">Age:<span class="required">*</span></label>
+    <input type="number" name="age" id="age" required placeholder="Enter your age" min="1" max="120">
+    <span id="age-error"></span>
+
+    <button type="submit">Register</button>
+  </form>
 </main>
+
+<!-- Internal JavaScript -->
+<script>
+  document.getElementById("password").addEventListener("input", function () {
+    console.log("Password length:", this.value.length);
+  });
+
+  function validateInline() {
+    return validateAge(); // Calls external JavaScript
+  }
+</script>
+
+<!-- External JavaScript for age validation -->
+<script src="agecheck.js"></script>
 
 </body>
 </html>
