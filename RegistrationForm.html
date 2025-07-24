@@ -5,28 +5,50 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Simple Registration Form</title>
   <link rel="stylesheet" href="assets/css/Registration.css">
-  
+  <style>
+    .success-message {
+      color: green;
+      font-weight: bold;
+      display: none;
+    }
+
+    .field-success {
+      font-size: 0.9em;
+      display: none;
+      margin-bottom: 10px;
+    }
+
+    .required {
+      color: red;
+    }
+  </style>
 </head>
 <body>
 
 <main>
-  <form id="registrationForm" method="post" action="login.html" onsubmit="return validateInline();">
+  <form id="RegistrationForm">
     <h2>Registration</h2>
 
     <label for="name">Name:<span class="required">*</span></label>
-    <input type="text" name="name" id="name" required placeholder="Enter your name" pattern="^[A-Za-z\s]+$" title="Only letters and spaces allowed">
+    <input type="text" name="name" id="name" required placeholder="Enter your name">
+    <span id="name-success" class="field-success" style="color: green;">✓ Name looks good!</span>
 
     <label for="email">Email:<span class="required">*</span></label>
-    <input type="email" name="email" id="email" required placeholder="Enter your email" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$">
+    <input type="email" name="email" id="email" required placeholder="Enter your email">
+    <span id="email-success" class="field-success" style="color: green;">✓ Valid email!</span>
 
     <label for="password">Password:<span class="required">*</span></label>
-    <input type="password" name="password" id="password" required placeholder="Create a password" pattern="^(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{8,}$" title="Min 8 characters, 1 special character, and 1 number.">
+    <input type="password" name="password" id="password" required placeholder="Create a password"
+           pattern="^(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{8,}$"
+           title="Minimum 8 characters, at least 1 number and 1 special character">
+    <span id="password-success" class="field-success" style="color: green;">✓ Strong password!</span>
 
     <label>Gender:<span class="required">*</span></label>
     <div class="gender-options">
       <label>Male <input type="radio" name="gender" value="Male" required></label>
       <label>Female <input type="radio" name="gender" value="Female"></label>
     </div>
+    <span id="gender-success" class="field-success" style="color: green;">✓ Gender selected!</span>
 
     <label for="city">City:</label>
     <select name="city" id="city">
@@ -37,28 +59,113 @@
       <option value="Bokaro">Bokaro</option>
       <option value="Delhi">Delhi</option>
     </select>
+    <span id="city-success" class="field-success" style="color: green;">✓ City selected!</span>
 
     <label for="age">Age:<span class="required">*</span></label>
     <input type="number" name="age" id="age" required placeholder="Enter your age" min="1" max="120">
-    <span id="age-error"></span>
+    <span id="age-success" class="field-success">✓ Age is valid!</span>
 
-    <button type="submit">Register</button>
+    <input type="submit" value="Submit" style="background-color: skyblue;">
+    <div class="success-message" id="successMessage">Registration successful! Redirecting...</div>
   </form>
 </main>
 
-<!-- Internal JavaScript -->
 <script>
-  document.getElementById("password").addEventListener("input", function () {
-    console.log("Password length:", this.value.length);
+  document.getElementById('RegistrationForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const name = document.getElementById("name");
+    const email = document.getElementById("email");
+    const password = document.getElementById("password");
+    const gender = document.querySelector('input[name="gender"]:checked');
+    const city = document.getElementById("city");
+    const age = document.getElementById("age");
+
+    let valid = true;
+
+    // Name
+    if (name.value.trim() !== "") {
+      document.getElementById("name-success").style.display = "inline";
+    } else {
+      valid = false;
+    }
+
+    // Email
+    if (email.validity.valid) {
+      document.getElementById("email-success").style.display = "inline";
+    } else {
+      valid = false;
+    }
+
+    // Password
+    if (password.validity.valid) {
+      document.getElementById("password-success").style.display = "inline";
+    } else {
+      valid = false;
+    }
+
+    // Gender
+    if (gender) {
+      document.getElementById("gender-success").style.display = "inline";
+    } else {
+      valid = false;
+    }
+
+    // City
+    if (city.value !== "None") {
+      document.getElementById("city-success").style.display = "inline";
+    }
+
+    // Age with switch-case and color
+    const ageValue = parseInt(age.value);
+    const ageSuccess = document.getElementById("age-success");
+
+    switch (true) {
+      case isNaN(ageValue):
+        valid = false;
+        ageSuccess.style.display = "none";
+        break;
+
+      case (ageValue >= 1 && ageValue <= 12):
+        ageSuccess.textContent = "✓ You are a child!";
+        ageSuccess.style.color = "orange";
+        ageSuccess.style.display = "inline";
+        break;
+
+      case (ageValue >= 13 && ageValue <= 19):
+        ageSuccess.textContent = "✓ You are a teenager!";
+        ageSuccess.style.color = "blue";
+        ageSuccess.style.display = "inline";
+        break;
+
+      case (ageValue >= 20 && ageValue <= 59):
+        ageSuccess.textContent = "✓ You are an adult!";
+        ageSuccess.style.color = "green";
+        ageSuccess.style.display = "inline";
+        break;
+
+      case (ageValue >= 60 && ageValue <= 120):
+        ageSuccess.textContent = "✓ You are a senior citizen!";
+        ageSuccess.style.color = "purple";
+        ageSuccess.style.display = "inline";
+        break;
+
+      default:
+        valid = false;
+        ageSuccess.style.display = "none";
+        break;
+    }
+
+    // Final success message and redirect
+    if (valid) {
+      document.getElementById("successMessage").style.display = "block";
+      setTimeout(() => {
+        window.location.href = "login.html";
+      }, 7000);
+    }
   });
-
-  function validateInline() {
-    return validateAge(); // Calls external JavaScript
-  }
 </script>
-
-<!-- External JavaScript for age validation -->
-<script src="javascript/agecheck.js"></script>
 
 </body>
 </html>
+
